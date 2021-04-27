@@ -20,10 +20,6 @@ class StaticEngine implements Engine {
     return Differ.diff(component.__doRenderLifecycle(), this, component, component.__renderedChildren);
   }
 
-  public function remove(component:Component) {
-    // noop
-  }
-
   public function schedule(cb:()->Void):Void {
     scheduler.schedule(cb);
   }
