@@ -1,56 +1,37 @@
 package blok;
 
 import haxe.ds.Map;
-import blok.core.Node;
-import blok.core.Differ;
+import blok.core.html.HtmlBaseProps;
 
-class NodeType<Props:{}> {
+class NodeType<Attrs:{}> {
   static var types:Map<String, NodeType<Dynamic>> = [];
 
   public static function get<Props:{}>(tag:String):NodeType<Props> {
-    if (!types.exists(tag)) switch tag.split(':') {
-      case ['svg', name]: types.set(tag, new NodeType(name));
-      default: types.set(tag, new NodeType(tag));
+    if (!types.exists(tag)) { 
+      types.set(tag, new NodeType(tag));
     }
     return cast types.get(tag);
   }
 
-  public static function updateNodeAttribute(node:Node, name:String, oldValue:Dynamic, newValue:Dynamic):Void {
-    if (name.charAt(0) == 'o' && name.charAt(1) == 'n') {
-      // noop
-    } else if (name == 'className') {
-      node.setAttribute('class', newValue);
-    } else if (newValue == null || newValue == false) {
-      node.removeAttribute(name);
-    } else if (newValue == true) {
-      node.setAttribute(name, name);
-    } else {
-      node.setAttribute(name, newValue);
-    }
-  }
-
   final tag:String;
+  // final isSvg:Bool;
 
-  public function new(tag) {
+  public function new(tag, isSvg = false) {
     this.tag = tag;
-  }
-  
-  public function create(props:Props, context:Context):Node {
-    var node = new Node(tag);
-    Differ.diffObject(
-      {}, 
-      props, 
-      updateNodeAttribute.bind(node)
-    );
-    return node;
+    // this.isSvg = isSvg;
   }
 
-  public function update(node:Node, previousProps:Props, props:Props, context:Context):Node {
-    Differ.diffObject(
-      previousProps, 
-      props, 
-      updateNodeAttribute.bind(node)
-    );
-    return node;
+  public function create(props:HtmlChildrenProps<Attrs, Dynamic>) {
+    return new NativeComponent(tag, {
+      attributes: props.attrs,
+      children: props.children 
+    });
+  }
+
+  public function update(component:NativeComponent<Attrs>, props:HtmlChildrenProps<Attrs, Dynamic>) {
+    component.updateComponentProperties({
+      attributes: props.attrs,
+      children: props.children == null ? [] : props.children
+    });
   }
 }

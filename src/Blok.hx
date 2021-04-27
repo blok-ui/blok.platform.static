@@ -1,5 +1,5 @@
 typedef Context = blok.Context;
-typedef Platform = blok.statik.Platform;
+typedef Platform = blok.ssr.Platform;
 typedef Component = blok.Component;
 typedef Provider<T:blok.ServiceProvider> = blok.Provider<T>;
 typedef Record = blok.Record;
