@@ -1,6 +1,10 @@
 package blok;
 
-@:build(blok.core.html.HtmlBuilder.build('blok.core.html.HtmlTags', (_:Dynamic)))
+@:build(blok.core.html.HtmlBuilder.build(
+  'blok.core.html.HtmlTags',
+  'blok.NodeType', 
+  (_:Dynamic)
+))
 class Html {
   public static inline function fragment(children:Array<VNode>):VNode {
     return VFragment(children);
