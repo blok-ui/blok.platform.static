@@ -10,7 +10,7 @@ class StaticRoot extends Component {
   @prop var catchException:(e:Exception)->Void;
   @prop var child:VNode;
 
-  @effect
+  @before
   function complainIfNotRoot() {
     if (__parent != null)
       throw new BlokException('StaticRoot must be a root component', this);
@@ -21,8 +21,9 @@ class StaticRoot extends Component {
     onRender(__renderedChildren.stringifyRendered());
   }
 
-  override function componentDidCatch(exception:Exception) {
+  override function componentDidCatch(exception:Exception):VNode {
     catchException(exception);
+    return VNone;
   }
 
   override function __dequeueUpdates() {

@@ -40,18 +40,23 @@ class HtmlRenderer {
       return stringifyRendered(rendered);
     }
 
-    var out = '<${native.tag}';
+    var tag = switch native.tag.split(':') {
+      case [_, name]: name;
+      default: native.tag;
+    }
+
+    var out = '<${tag}';
     var attrs = [ for (key => value in attrs) '$key="$value"' ];
     if (attrs.length > 0) out += ' ${attrs.join(' ')}';
 
     // todo: handle innerHTML.
 
-    return if (VOID_ELEMENTS.contains(native.tag)) {
+    return if (VOID_ELEMENTS.contains(tag)) {
       out + '/>';
     } else if (rendered.children.length > 0) {
-      out + '>' + stringifyRendered(rendered) + '</${native.tag}>';
+      out + '>' + stringifyRendered(rendered) + '</${tag}>';
     } else {
-      out + '></${native.tag}>';
+      out + '></${tag}>';
     }
   }
 
@@ -63,10 +68,10 @@ class HtmlRenderer {
         // noop
       } else if (Reflect.isFunction(value)) {
         // noop
-      } else if (key == 'className') {
-        out.set('class', value);
       } else if (value == null || value == false) {
         // noop
+      } else if (key == 'className') {
+        out.set('class', value);
       } else if (value == true) {
         out.set(key, key);
       } else {
