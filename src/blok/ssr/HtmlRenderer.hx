@@ -1,6 +1,5 @@
 package blok.ssr;
 
-import blok.core.Rendered;
 import haxe.DynamicAccess;
 using StringTools;
 
@@ -11,25 +10,25 @@ class HtmlRenderer {
     'track', 'wbr',
   ];
 
-  public static function stringifyRendered(rendered:Rendered) {
-    return if (rendered.children.length > 0)
-      rendered.children.map(stringifyComponent).join('');
-    else 
-      '';
-  }
-
   public static function stringifyComponent(component:Component) {
     return switch Std.downcast(component, NativeComponent) {
       case null:
-        stringifyRendered(component.__renderedChildren);
+        stringifyChildren(component.getChildComponents());
       case native:
         stringifyNativeComponent(native);
     }
   }
 
+  public static function stringifyChildren(children:Array<Component>) {
+    return if (children.length > 0)
+      children.map(stringifyComponent).join('');
+    else 
+      '';
+  }
+
   public static function stringifyNativeComponent(native:NativeComponent<Dynamic>) {
     var attrs:DynamicAccess<String> = filterAttributesForRendering(native.attributes);
-    var rendered = native.__renderedChildren;
+    var children = native.getChildComponents();
     
     if (native.tag == '#text') {
       if (!attrs.exists('content')) return '';
@@ -37,7 +36,7 @@ class HtmlRenderer {
     }
 
     if (native.tag == '#document' || native.tag == '#fragment') {
-      return stringifyRendered(rendered);
+      return stringifyChildren(children);
     }
 
     var tag = switch native.tag.split(':') {
@@ -53,8 +52,8 @@ class HtmlRenderer {
 
     return if (VOID_ELEMENTS.contains(tag)) {
       out + '/>';
-    } else if (rendered.children.length > 0) {
-      out + '>' + stringifyRendered(rendered) + '</${tag}>';
+    } else if (children.length > 0) {
+      out + '>' + stringifyChildren(children)+ '</${tag}>';
     } else {
       out + '></${tag}>';
     }

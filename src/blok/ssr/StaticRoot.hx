@@ -18,7 +18,7 @@ class StaticRoot extends Component {
 
   @effect
   function notifyWhenRendered() {
-    onRender(__renderedChildren.stringifyRendered());
+    onRender(getChildComponents().stringifyChildren());
   }
 
   override function componentDidCatch(exception:Exception):VNode {

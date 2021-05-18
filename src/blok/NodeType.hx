@@ -13,7 +13,7 @@ class NodeType<Attrs:{}> {
     return cast types.get(tag);
   }
 
-  final tag:String;
+  public final tag:String;
   // final isSvg:Bool;
 
   public function new(tag, isSvg = false) {

@@ -18,6 +18,13 @@ class NativeComponent<Attrs:{}> extends Component {
   override function shouldComponentUpdate():Bool {
     return shouldUpdate;
   }
+
+  public function isComponentType(type:ComponentType<Dynamic, Dynamic>) {
+    return switch Std.downcast(type, NodeType) {
+      case null: false;
+      case type: tag == type.tag;
+    }
+  }
   
   public function render():VNode {
     return if (children.length > 0) VFragment(children) else VNone;
