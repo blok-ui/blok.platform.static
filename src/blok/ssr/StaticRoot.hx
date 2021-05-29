@@ -23,7 +23,7 @@ class StaticRoot extends Component {
 
   override function componentDidCatch(exception:Exception):VNode {
     catchException(exception);
-    return new VNodeNone();
+    return VFragment.empty();
   }
 
   override function __dequeueUpdates() {

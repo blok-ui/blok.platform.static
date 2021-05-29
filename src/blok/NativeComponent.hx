@@ -25,6 +25,14 @@ class NativeComponent<Attrs:{}> extends Component {
   }
   
   public function render():VNode {
-    return if (children != null && children.length > 0) new VFragment(children) else new VNodeNone();
+    return if (children != null && children.length > 0) 
+      new VFragment(children) 
+    else 
+      VFragment.empty();
+  }
+
+  override function __ensureVNode(vn:Null<VNode>):VNode {
+    // No placeholders needed for NativeComponents.
+    return if (vn == null) VFragment.empty() else vn;
   }
 }

@@ -6,16 +6,12 @@ function main() {
   var state = new SimpleState({ foo: 'foo' });
 
   Platform.render(
-    Provider.provide(state, context -> SimpleState.observe(context, state -> Html.div({
-      attrs: {
-        className: 'foo-bar',
-        onclick: e -> trace('oh no')
-      },
-      children: [ 
+    Provider.provide(state, context -> SimpleState.observe(context, state -> 
+      Html.div({ className: 'foo-bar', onclick: e -> trace('oh no') },
         Html.text('Foo'),
-        ShouldWork.node({ foo: state.foo }) 
-      ]
-    }))),
+        ShouldWork.node({ foo: state.foo })
+      ))
+    ),
     result -> trace(result + ' : ran ' + times++),
     e -> trace(e.message)
   );
@@ -27,16 +23,10 @@ class ShouldWork extends Component {
   @prop var foo:String;
 
   public function render() {
-    // throw new blok.exception.BlokException('oh no', this);
-    return Html.section({
-      attrs: {
-        className: foo.toLowerCase().replace(' ', '-')
-      },
-      children: [
-        Html.header({ children: [ Html.text('Stuff') ] }),
-        Html.p({ children: [ Html.text(foo) ] })
-      ]
-    });
+    return Html.section({ className: foo.toLowerCase().replace(' ', '-') },
+      Html.header({}, Html.text('Stuff')),
+      Html.p({}, Html.text(foo))
+    );
   }
 }
 

@@ -6,7 +6,7 @@ package blok;
   (_:Dynamic)
 ))
 class Html {
-  public static inline function fragment(children:Array<VNode>):VNode {
+  public static inline function fragment(...children:VNode):VNode {
     return new VFragment(children);
   }
 
