@@ -16,7 +16,7 @@ class NativeComponent<Attrs:{}> extends Component {
     __initComponentProps(props);
   }
 
-  override function shouldComponentUpdate():Bool {
+  override function shouldComponentRender():Bool {
     return shouldUpdate;
   }
 
@@ -24,15 +24,12 @@ class NativeComponent<Attrs:{}> extends Component {
     return type;
   }
   
-  public function render():VNode {
-    return if (children != null && children.length > 0) 
-      new VFragment(children) 
-    else 
-      VFragment.empty();
+  public function render() {
+    return children;
   }
 
-  override function __ensureVNode(vn:Null<VNode>):VNode {
+  override function __ensureVNode(vn):VNodeResult {
     // No placeholders needed for NativeComponents.
-    return if (vn == null) VFragment.empty() else vn;
+    return if (vn == null) [] else vn;
   }
 }

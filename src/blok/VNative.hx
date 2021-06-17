@@ -32,11 +32,14 @@ class VNative<Attrs:{}> implements VNode {
     this.key = props.key;
   }
 
-  public function createComponent() {
-    return new NativeComponent(type, tag, {
+  public function createComponent(?parent:Component) {
+    var native = new NativeComponent(type, tag, {
       attributes: props.attrs,
       children: props.children
     }, true);
+    native.initializeComponent(parent, key);
+    native.renderComponent();
+    return native;
   }
 
   public function updateComponent(component:Component):Component {
@@ -44,6 +47,9 @@ class VNative<Attrs:{}> implements VNode {
       attributes: props.attrs,
       children: props.children
     });
+    if (component.shouldComponentRender()) {
+      component.renderComponent();
+    }
     return component;
   }
 }

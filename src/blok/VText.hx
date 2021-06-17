@@ -15,8 +15,10 @@ class VText implements VNode {
     this.key = key;
   }
 
-  public function createComponent():Component {
-    return new NativeComponent(type, '#text', { attributes: props }, false);
+  public function createComponent(?parent:Component):Component {
+    var native = new NativeComponent(type, '#text', { attributes: props }, false);
+    native.initializeComponent(parent, key);
+    return native;
   }
 
   public function updateComponent(component:Component) {

@@ -21,9 +21,9 @@ class StaticRoot extends Component {
     onRender(getChildComponents().stringifyChildren());
   }
 
-  override function componentDidCatch(exception:Exception):VNode {
+  override function componentDidCatch(exception:Exception) {
     catchException(exception);
-    return VFragment.empty();
+    return [];
   }
 
   override function __dequeueUpdates() {
