@@ -7,7 +7,7 @@ package blok;
 ))
 class Html {
   public static inline function fragment(...children:VNode):VNode {
-    return new VFragment(children);
+    return Fragment.node({ children: children.toArray() });
   }
 
   public static inline function text(content:String, ?key:Key):VNode {
