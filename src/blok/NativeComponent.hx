@@ -27,9 +27,4 @@ class NativeComponent<Attrs:{}> extends Component {
   public function render() {
     return children;
   }
-
-  override function __ensureVNode(vn):VNodeResult {
-    // No placeholders needed for NativeComponents.
-    return if (vn == null) [] else vn;
-  }
 }

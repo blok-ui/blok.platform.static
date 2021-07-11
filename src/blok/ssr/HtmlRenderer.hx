@@ -13,7 +13,7 @@ class HtmlRenderer {
   public static function stringifyComponent(component:Component) {
     return switch Std.downcast(component, NativeComponent) {
       case null:
-        stringifyChildren(component.getChildComponents());
+        stringifyChildren(component.getChildren());
       case native:
         stringifyNativeComponent(native);
     }
@@ -28,7 +28,7 @@ class HtmlRenderer {
 
   public static function stringifyNativeComponent(native:NativeComponent<Dynamic>) {
     var attrs:DynamicAccess<String> = filterAttributesForRendering(native.attributes);
-    var children = native.getChildComponents();
+    var children = native.getChildren();
     
     if (native.tag == '#text') {
       if (!attrs.exists('content')) return '';

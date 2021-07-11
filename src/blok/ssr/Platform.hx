@@ -8,14 +8,18 @@ class Platform {
     onRender:(result:String)->Void,
     ?catchException:(e:Exception)->Void
   ) {
-    var comp = new StaticRoot({
+    var engine = new Engine([]);
+    var root = new StaticRoot({
       onRender: onRender,
       child: child,
       catchException: catchException == null
         ? e -> throw e
         : catchException
     });
-    comp.initializeRootComponent(Differ.getInstance());
-    return comp;
+    
+    root.initializeRootComponent(engine);
+    root.renderRootComponent();
+
+    return root;
   }
 }

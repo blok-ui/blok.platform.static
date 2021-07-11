@@ -15,13 +15,13 @@ class VText implements VNode {
     this.key = key;
   }
 
-  public function createComponent(?parent:Component):Component {
+  public function createComponent(engine:Engine, ?parent:Component):Component {
     var native = new NativeComponent(type, '#text', { attributes: props }, false);
-    native.initializeComponent(parent, key);
+    native.initializeComponent(parent, engine, key);
     return native;
   }
 
-  public function updateComponent(component:Component) {
+  public function updateComponent(engine:Engine, component:Component) {
     component.updateComponentProperties({ attributes: props });
     return component;
   }

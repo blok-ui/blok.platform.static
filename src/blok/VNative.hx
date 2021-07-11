@@ -32,17 +32,17 @@ class VNative<Attrs:{}> implements VNode {
     this.key = props.key;
   }
 
-  public function createComponent(?parent:Component) {
+  public function createComponent(engine:Engine, ?parent:Component) {
     var native = new NativeComponent(type, tag, {
       attributes: props.attrs,
       children: props.children
     }, true);
-    native.initializeComponent(parent, key);
+    native.initializeComponent(parent, engine, key);
     native.renderComponent();
     return native;
   }
 
-  public function updateComponent(component:Component):Component {
+  public function updateComponent(engine:Engine, component:Component):Component {
     component.updateComponentProperties({
       attributes: props.attrs,
       children: props.children
