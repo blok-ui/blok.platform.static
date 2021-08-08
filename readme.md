@@ -8,7 +8,7 @@ Usage
 
 Blok's static platform is designed to work seamlessly with [blok.platform.dom](https://github.com/blok-ui/blok.platform.dom). The only code that should be different is which `Platform` you use.
 
-Right now, `blok.ssr.Platform` has only one method: `render`. Using it might look something like this:
+Right now, `blok.ssr.Platform` has only one static method: `render`. Using it might look something like this:
 
 ```haxe
 import blok.Html;
@@ -17,7 +17,7 @@ import blok.ssr.Platform;
 function main() {
   Platform.render(
     Html.div({
-      children: [ Html.text('foo) ]
+      children: [ Html.text('foo') ]
     }),
     html -> trace(html),
     e -> trace(e.message)
