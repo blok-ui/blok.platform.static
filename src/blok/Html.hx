@@ -2,7 +2,7 @@ package blok;
 
 @:build(blok.core.html.HtmlBuilder.build(
   'blok.core.html.HtmlTags',
-  'blok.VNative', 
+  'blok.VElement', 
   (_:Dynamic)
 ))
 class Html {
@@ -11,6 +11,6 @@ class Html {
   }
 
   public static inline function text(content:String, ?key:Key):VNode {
-    return new VText({ content: content }, key);
+    return new VText(content, key);
   }
 }

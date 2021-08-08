@@ -1,40 +1,85 @@
 package blok.ssr;
 
 import haxe.Exception;
+import blok.WidgetType.getUniqueTypeId;
 import blok.exception.BlokException;
 
-using blok.ssr.HtmlRenderer;
+using Lambda;
 
-class StaticRoot extends Component {
-  @prop var onRender:(result:String)->Void;
-  @prop var catchException:(e:Exception)->Void;
-  @prop var child:VNode;
+class StaticRoot extends ConcreteWidget {
+  public static final type:WidgetType = getUniqueTypeId();
 
-  @before
+  var onRender:(result:String)->Void;
+  var catchException:Null<(e:Exception)->Void>;
+  var child:VNode;
+
+  public function new(onRender, catchException, child) {
+    this.onRender = onRender;
+    this.catchException = catchException;
+    this.child = child;
+  }
+
   function complainIfNotRoot() {
     if (__parent != null)
       throw new BlokException('StaticRoot must be a root component', this);
   }
 
-  @effect
   function notifyWhenRendered() {
-    onRender(getChildren().stringifyChildren());
+    onRender(toConcrete().join(''));
   }
 
-  override function componentDidCatch(exception:Exception) {
-    catchException(exception);
-    return [];
+  public function getWidgetType() {
+    return type;
   }
 
-  override function __dequeueUpdates() {
-    super.__dequeueUpdates();
-    // ALWAYS run our onRender callback if any children change.
-    // note: I'm not 100% sure this is right, but it _should_ be
-    //       the only thing we need to do.
-    notifyWhenRendered();
+  public function __performUpdate(registerEffect:(effect:()->Void)->Void) {
+    try {
+      Differ.diffChildren(this, [ child ], __platform, registerEffect);
+    } catch (e) {
+      if (catchException != null) {
+        catchException(e);
+        return;
+      }
+      throw e;
+    }
+    registerEffect(notifyWhenRendered);
+  }
+  
+  public function toConcrete():Array<Dynamic> {
+    return getConcreteChildren()
+      .map(c -> c.toConcrete())
+      .flatten();
   }
 
-  public function render() {
-    return child;
+  public function getFirstConcreteChild() {
+    return toConcrete()[0];
+  }
+
+  public function getLastConcreteChild() {
+    return toConcrete().pop();
+  }
+
+  public function addConcreteChild(child:Widget) {
+    // noop
+  }
+
+  public function insertConcreteChildAt(pos:Int, child:Widget) {
+    // noop
+  }
+
+  public function moveConcreteChildTo(pos:Int, child:Widget) {
+    // noop
+  }
+
+  public function removeConcreteChild(child:Widget) {
+    // noop
+  }
+
+  override function scheduleUpdatePendingChildren() {
+    __platform.schedule(registerEffect -> {
+      updatePendingChildren(registerEffect);
+      registerEffect(notifyWhenRendered); // Ensure we're always notifying.
+      null;
+    });
   }
 }
