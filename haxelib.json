@@ -7,10 +7,10 @@
     "ui",
     "blok.platform"
   ],
-  "releasenote": "Reworked to comply with new Blok internals.",
+  "releasenote": "Using latest blok.core",
   "version": "0.3.2",
   "dependencies": {
-    "blok.core": "0.3.2",
+    "blok.core": "0.4.0-alpha.1",
     "blok.core.html": "0.1.2"
   }
 }
