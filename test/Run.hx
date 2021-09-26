@@ -36,6 +36,6 @@ class SimpleState implements State {
 
   @update
   public function setFoo(foo) {
-    return UpdateState({ foo: foo });
+    return { foo: foo };
   }
 }
