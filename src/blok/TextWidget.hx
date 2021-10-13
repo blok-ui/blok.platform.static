@@ -20,16 +20,8 @@ class TextWidget extends ConcreteWidget {
     return type;
   }
 
-  public function toConcrete() {
+  public function toConcrete():Concrete {
     return [ textContent ];
-  }
-
-  public function getFirstConcreteChild() {
-    return textContent;
-  }
-
-  public function getLastConcreteChild() {
-    return textContent;
   }
   
   public function __performUpdate(registerEffect:(effect:()->Void)->Void):Void {

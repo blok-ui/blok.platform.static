@@ -25,7 +25,7 @@ class StaticRoot extends ConcreteWidget {
   }
 
   function notifyWhenRendered() {
-    onRender(toConcrete().join(''));
+    onRender(toConcrete().toArray().join(''));
   }
 
   public function getWidgetType() {
@@ -45,18 +45,10 @@ class StaticRoot extends ConcreteWidget {
     registerEffect(notifyWhenRendered);
   }
   
-  public function toConcrete():Array<Dynamic> {
-    return getConcreteChildren()
-      .map(c -> c.toConcrete())
+  public function toConcrete():Concrete {
+    return getChildConcreteManagers()
+      .map(c -> c.toConcrete().toArray())
       .flatten();
-  }
-
-  public function getFirstConcreteChild() {
-    return toConcrete()[0];
-  }
-
-  public function getLastConcreteChild() {
-    return toConcrete().pop();
   }
 
   public function addConcreteChild(child:Widget) {

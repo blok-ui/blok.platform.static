@@ -36,16 +36,8 @@ class ElementWidget<Attrs:{}> extends ConcreteWidget {
     return type;
   }
 
-  public function toConcrete() {
+  public function toConcrete():Concrete {
     return [ stringifyWidget(this) ];
-  }
-
-  public function getFirstConcreteChild() {
-    return toConcrete();
-  }
-
-  public function getLastConcreteChild() {
-    return toConcrete();
   }
 
   public function addConcreteChild(child:Widget) {
@@ -74,8 +66,8 @@ private final VOID_ELEMENTS = [
 private function stringifyWidget<Attrs:{}>(widget:ElementWidget<Attrs>) {
   var attrs = filterAttributesForRendering(widget.attributes);
   var children:Array<String> = widget
-    .getConcreteChildren()
-    .map(c -> c.toConcrete())
+    .getChildConcreteManagers()
+    .map(c -> c.toConcrete().toArray())
     .flatten();
 
   if (widget.tag == '#document' || widget.tag == '#fragment') {

@@ -9,19 +9,11 @@ class ComponentManager implements ConcreteManager {
     this.component = component;
   }
 
-  public function toConcrete():Array<Dynamic> {
+  public function toConcrete():Concrete {
     return component
-      .getConcreteChildren()
-      .map(c -> c.toConcrete())
+      .getChildConcreteManagers()
+      .map(c -> c.toConcrete().toArray())
       .flatten();
-  }
-
-  public function getFirstConcreteChild() {
-    return toConcrete()[0];
-  }
-
-  public function getLastConcreteChild() {
-    return toConcrete().pop();
   }
 
   public function addConcreteChild(child:Widget) {
