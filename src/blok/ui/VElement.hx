@@ -1,7 +1,7 @@
-package blok;
+package blok.ui;
 
-import blok.WidgetType.getUniqueTypeId;
-import blok.core.html.HtmlBaseProps;
+import blok.core.UniqueId;
+import blok.html.HtmlBaseProps;
 
 class VElement<Attrs:{}> implements VNode {
   public static inline final SVG_NS = 'http://www.w3.org/2000/svg';
@@ -9,7 +9,7 @@ class VElement<Attrs:{}> implements VNode {
 
   public static function create<Attrs:{}>(tag:String, props):VElement<Attrs> {
     if (!types.exists(tag)) {
-      types.set(tag, getUniqueTypeId());
+      types.set(tag, new UniqueId());
     }
     var isSvg = false;
     var realTag = switch tag.split(':') {

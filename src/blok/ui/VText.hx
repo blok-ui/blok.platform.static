@@ -1,4 +1,4 @@
-package blok;
+package blok.ui;
 
 class VText implements VNode {
   public final type:WidgetType = TextWidget.type;

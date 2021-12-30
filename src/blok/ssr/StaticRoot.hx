@@ -1,13 +1,15 @@
 package blok.ssr;
 
 import haxe.Exception;
-import blok.WidgetType.getUniqueTypeId;
+import blok.ui.*;
+import blok.core.UniqueId;
+import blok.diff.Differ;
 import blok.exception.BlokException;
 
 using Lambda;
 
 class StaticRoot extends ConcreteWidget {
-  public static final type:WidgetType = getUniqueTypeId();
+  public static final type:WidgetType = new UniqueId();
 
   var onRender:(result:String)->Void;
   var catchException:Null<(e:Exception)->Void>;

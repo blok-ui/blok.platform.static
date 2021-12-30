@@ -1,6 +1,7 @@
-package blok;
+package blok.ui;
 
 import haxe.DynamicAccess;
+import blok.diff.Differ;
 
 using Lambda;
 using StringTools;

@@ -1,8 +1,10 @@
 package blok.ssr;
 
 import haxe.Exception;
+import blok.ui.*;
+import blok.core.DefaultScheduler;
 
-class Platform extends blok.Platform {
+class Platform extends blok.ui.Platform {
   public static function render(
     child:VNode, 
     onRender:(result:String)->Void,
