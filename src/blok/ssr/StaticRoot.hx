@@ -3,7 +3,6 @@ package blok.ssr;
 import haxe.Exception;
 import blok.ui.*;
 import blok.core.UniqueId;
-import blok.diff.Differ;
 import blok.exception.BlokException;
 
 using Lambda;
