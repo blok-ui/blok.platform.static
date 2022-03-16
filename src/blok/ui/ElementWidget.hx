@@ -18,8 +18,8 @@ class ElementWidget<Attrs:{}> extends ConcreteWidget {
     this.children = children;
   }
 
-  public function __performUpdate(registerEffect:(effect:()->Void)->Void) {
-    Differ.diffChildren(this, children, __platform, registerEffect);
+  public function __performUpdate(effects:Effect) {
+    Differ.diffChildren(this, children, __platform, effects);
   }
 
   public function setChildren(newChildren:Array<VNode>) {

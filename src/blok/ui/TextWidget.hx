@@ -24,7 +24,7 @@ class TextWidget extends ConcreteWidget {
     return [ textContent ];
   }
   
-  public function __performUpdate(registerEffect:(effect:()->Void)->Void):Void {
+  public function __performUpdate(effect:Effect):Void {
     // noop
   }
 

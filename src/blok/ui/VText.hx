@@ -11,17 +11,17 @@ class VText implements VNode {
     this.props = text;
   }
 
-  public function createWidget(?parent:Widget, platform:Platform, registerEffect:(effect:()->Void)->Void):Widget {
+  public function createWidget(?parent:Widget, platform:Platform, effect:Effect):Widget {
     var widget = new TextWidget(props);
     widget.initializeWidget(parent, platform, key);
-    widget.performUpdate(registerEffect);
+    widget.performUpdate(effect);
     return widget;
   }
 
-  public function updateWidget(widget:Widget, registerEffect:(effect:()->Void)->Void):Widget {
+  public function updateWidget(widget:Widget, effect:Effect):Widget {
     var text:TextWidget = cast widget;
     text.setText(props);
-    text.performUpdate(registerEffect);
+    text.performUpdate(effect);
     return widget;
   }
 }

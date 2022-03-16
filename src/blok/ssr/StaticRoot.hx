@@ -33,9 +33,9 @@ class StaticRoot extends ConcreteWidget {
     return type;
   }
 
-  public function __performUpdate(registerEffect:(effect:()->Void)->Void) {
+  public function __performUpdate(effects:Effect) {
     try {
-      Differ.diffChildren(this, [ child ], __platform, registerEffect);
+      Differ.diffChildren(this, [ child ], __platform, effects);
     } catch (e) {
       if (catchException != null) {
         catchException(e);
@@ -43,7 +43,7 @@ class StaticRoot extends ConcreteWidget {
       }
       throw e;
     }
-    registerEffect(notifyWhenRendered);
+    effects.register(notifyWhenRendered);
   }
   
   public function toConcrete():Concrete {
@@ -69,9 +69,9 @@ class StaticRoot extends ConcreteWidget {
   }
 
   override function scheduleUpdatePendingChildren() {
-    __platform.schedule(registerEffect -> {
-      updatePendingChildren(registerEffect);
-      registerEffect(notifyWhenRendered); // Ensure we're always notifying.
+    __platform.schedule(effects -> {
+      updatePendingChildren(effects);
+      effects.register(notifyWhenRendered); // Ensure we're always notifying.
       null;
     });
   }
