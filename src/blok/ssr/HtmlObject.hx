@@ -1,6 +1,7 @@
 package blok.ssr;
 
 import haxe.DynamicAccess;
+import blok.core.Debug;
 import blok.core.ObjectTools;
 import blok.render.Object;
 
@@ -14,16 +15,38 @@ class HtmlObject extends Object {
   final tag:String;
   final attributes:{};
   
-  public function new(tag, attributes, children) {
+  public function new(tag, attributes) {
     this.tag = tag;
     this.attributes = attributes;
-    this.children = children;
+  }
+
+  function notify() {
+    if (parent != null) {
+      Debug.assert(parent is HtmlObject);
+      (cast parent:HtmlObject).notify();
+    }
+  }
+
+  override function append(child:Object) {
+    super.append(child);
+    notify();
+  }
+
+  override function insert(pos:Int, child:Object) {
+    super.insert(pos, child);
+    notify();
+  }
+
+  override function remove() {
+    super.remove();
+    notify();
   }
 
   public function updateAttributes(newAttrs:{}) {
     ObjectTools.diffObject(attributes, newAttrs, (key, oldValue, newValue) -> {
       Reflect.setField(attributes, key, newValue);
     });
+    notify();
   }
 
   public function toString():String {

@@ -46,7 +46,7 @@ class HtmlElementWidget<Attrs:{}> extends ObjectWidget {
   }
 
   public function createObject():Dynamic {
-    return new HtmlObject(tag, attrs, []);
+    return new HtmlObject(tag, attrs);
   }
 
   public function updateObject(object:Dynamic, ?previousWidget:Widget):Dynamic {
