@@ -1,9 +1,11 @@
+import blok.core.DefaultScheduler;
 using StringTools;
 using Blok;
 
 function main() {
   var times:Int = 1;
   var state = new SimpleState({ foo: 'foo' });
+  state.getObservable().observe(state -> trace(state.foo));
 
   Platform.render(
     Provider.provide(state, context -> SimpleState.observe(context, state -> 
@@ -12,11 +14,12 @@ function main() {
         ShouldWork.node({ foo: state.foo })
       ))
     ),
-    result -> trace(result + ' : ran ' + times++),
-    e -> trace(e.message)
+    result -> trace(result.toString() + ' : ran ' + times++)
   );
 
-  state.setFoo('Something else');
+  DefaultScheduler.getInstance().schedule(() -> {
+    state.setFoo('Something else');
+  });
 }
 
 class ShouldWork extends Component {
