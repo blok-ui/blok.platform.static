@@ -10,21 +10,12 @@ class Platform extends blok.render.Platform {
     return platform.mountRootWidget(widget);
   }
 
-  public static function render(child:Widget, ?onRender) {
+  public static function render(child:Widget, ?onRender:(object:HtmlObject)->Void) {
     var root = new RootObject();
-    if (onRender != null) root.onUpdate.observe(onRender, { defer: true });
-    return mount(root, child);
-  }
-
-  var onRender:()->Void;
-
-  function setRenderCallback(onRender) {
-    this.onRender = onRender;
-  }
-
-  override function performUpdate() {
-    super.performUpdate();
-    if (onRender != null) onRender();
+    var el = mount(root, child);
+    if (onRender != null) {
+      el.getObservable().observe(el -> onRender(el.getObject()));
+    }
   }
 
   public function createPlaceholderObject(widget:Widget):Dynamic {

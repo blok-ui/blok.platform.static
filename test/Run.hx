@@ -11,7 +11,7 @@ function main() {
     Provider.provide(state, context -> SimpleState.observe(context, state -> 
       Html.div({ className: 'foo-bar', onclick: e -> trace('oh no') },
         Html.text('Foo'),
-        ShouldWork.node({ foo: state.foo })
+        ShouldWork.of({ foo: state.foo })
       ))
     ),
     result -> trace(result.toString() + ' : ran ' + times++)

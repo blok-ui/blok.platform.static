@@ -10,7 +10,6 @@ class RootWidget extends blok.ui.RootWidget {
   public function new(object, platform, child) {
     super(platform, child);
     this.object = object;
-    object.setup(platform);
   }
 
   public function getWidgetType():UniqueId {
